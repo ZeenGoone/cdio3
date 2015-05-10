@@ -24,7 +24,35 @@ public class DBServiceClientImpl implements DBServiceClientInt {
 	public void authenticateUser(String username, String password){
 		this.service.authenticateUser(username, password, new DefaultCallback());
 	}
+	@Override
+	public void getUser(int oprId) {
+		this.service.getUser(oprId, new DefaultCallback());
+		
+	}
 
+	@Override
+	public void getUserList() {
+		this.service.getUserList(new DefaultCallback());
+		
+	}
+
+	@Override
+	public void deleteUser(int oprId) {
+		this.service.deleteUser(oprId, new DefaultCallback());
+		
+	}
+
+	@Override
+	public void createUser(OperatoerDTO opr) {
+		this.service.createUser(opr, new DefaultCallback());
+		
+	}
+
+	@Override
+	public void updateUser(OperatoerDTO opr) {
+		this.service.updateUser(opr, new DefaultCallback());
+		
+	}
 	public MainGUI getMainGUI(){
 		return this.maingui;
 	}

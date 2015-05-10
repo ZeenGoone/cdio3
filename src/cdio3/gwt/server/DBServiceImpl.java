@@ -2,9 +2,11 @@ package cdio3.gwt.server;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
+import cdio3.gwt.server.Connector;
 import cdio3.gwt.client.model.OperatoerDTO;
 import cdio3.gwt.client.service.DBService;
 
@@ -15,38 +17,170 @@ public class DBServiceImpl extends RemoteServiceServlet implements DBService {
 	@Override
 	public Boolean authenticateUser(String username, String password) {
 		ResultSet rs = null;
-		//OperatoerDTO opr = new OperatoerDTO();
 		try {
 			Connector conn = new Connector();
 			rs = conn.doQuery("SELECT * FROM operatoer WHERE opr_navn = \"" + username + "\" AND password = \"" + password + "\"");
 		} catch (DALException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		try {
 			if(!rs.first()) return false;
-
-//			opr.setOprId(rs.getInt("opr_id"));
-//			opr.setOprNavn(rs.getString("opr_navn"));
-//			opr.setIni(rs.getString("ini"));
-//			opr.setCpr(rs.getString("cpr"));
-//			opr.setPassword(rs.getString("password"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return true;
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public OperatoerDTO getUser(int oprId) {
+		ResultSet rs = null;
+		OperatoerDTO opr = new OperatoerDTO();
+		try {
+			Connector conn = new Connector();
+			rs = conn.doQuery("SELECT * FROM operatoer WHERE opr_id = \"" + oprId + "\"");
+		} catch (DALException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			if(!rs.first()) return null;
+			opr.setOprId(rs.getInt("opr_id"));
+			opr.setOprNavn(rs.getString("opr_navn"));
+			opr.setIni(rs.getString("ini"));
+			opr.setCpr(rs.getString("cpr"));
+			opr.setPassword(rs.getString("password"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return opr;
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public ArrayList<OperatoerDTO> getUserList() {
+		ResultSet rs = null;
+		OperatoerDTO opr = new OperatoerDTO();
+		ArrayList<OperatoerDTO> oprList = new ArrayList<OperatoerDTO>();
+		
+		try {
+			Connector conn = new Connector();
+			rs = conn.doQuery("SELECT * FROM operatoer");
+		} catch (DALException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			if(!rs.first()) return null;
+			while(rs.next()){
+				opr.setOprId(rs.getInt("opr_id"));
+				opr.setOprNavn(rs.getString("opr_navn"));
+				opr.setIni(rs.getString("ini"));
+				opr.setCpr(rs.getString("cpr"));
+				opr.setPassword(rs.getString("password"));
+				oprList.add(opr);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return oprList;
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public void deleteUser(int oprId) {
+		Connector conn = null;
+		try {
+			conn = new Connector();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conn.doUpdate("DELETE FROM operatoer WHERE opr_id = " + oprId);
+		} catch (DALException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public void createUser(OperatoerDTO opr) {
+		Connector conn = null;
+		try {
+			conn = new Connector();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conn.doUpdate(
+					"INSERT INTO operatoer(opr_id, opr_navn, ini, cpr, password) "
+					+ "VALUES(" + opr.getOprId() + ", '" + opr.getOprNavn() + ", '" + opr.getIni() 
+					+ ", '" + opr.getCpr() + ", '" + opr.getPassword() + "'); "
+				);
+		} catch (DALException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public void updateUser(OperatoerDTO opr) {
+		Connector conn = null;
+		try {
+			conn = new Connector();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			conn.doUpdate(
+					"UPDATE operatoer SET  opr_id = '" + opr.getOprId() + "', opr_navn = '" + opr.getOprNavn() + "', ini =  '" + opr.getIni() + 
+					"', cpr = '" + opr.getCpr() + "', password = '" + opr.getPassword() + "' WHERE opr_id = " +
+					opr.getOprId()
+			);
+		} catch (DALException e) {
+			e.printStackTrace();
+		}
 	}
 }
