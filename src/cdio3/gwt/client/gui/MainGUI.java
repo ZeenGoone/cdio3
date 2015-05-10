@@ -1,5 +1,7 @@
 package cdio3.gwt.client.gui;
 
+import java.util.ArrayList;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -65,5 +67,20 @@ public class MainGUI extends Composite {
 		
 		html.setHTML(code);
 		this.vPanel.add(html);
+	}
+	
+	public void displayOperatoerListe(ArrayList<OperatoerDTO> oprList){
+		for(int i = 0;i < oprList.size();i++){
+			HTML html = new HTML();
+			
+			String code = "<b>ID:</b> " + oprList.get(i).getOprId() + "</br>";
+			code = code + "<b>Navn:</b> " + oprList.get(i).getOprNavn() + "</br>";
+			code = code + "<b>Ini:</b> " + oprList.get(i).getIni() + "</br>";
+			code = code + "<b>Cpr:</b> " + oprList.get(i).getCpr() + "</br>";
+			code = code + "<b>Password:</b> " + oprList.get(i).getPassword() + "</br>";
+			
+			html.setHTML(code);
+			this.vPanel.add(html);
+		}
 	}
 }

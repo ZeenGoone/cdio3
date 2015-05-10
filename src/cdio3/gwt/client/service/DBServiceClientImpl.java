@@ -1,5 +1,7 @@
 package cdio3.gwt.client.service;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -65,6 +67,7 @@ public class DBServiceClientImpl implements DBServiceClientInt {
 			System.out.println("An Error has occured");
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public void onSuccess(Object result) {
 
@@ -75,6 +78,10 @@ public class DBServiceClientImpl implements DBServiceClientInt {
 			else if(result instanceof Boolean){
 				boolean svar = (Boolean) result;
 				maingui.authenticateOperatoer(svar);
+			}
+			else if(result instanceof ArrayList<?>){
+				ArrayList oprList = (ArrayList<OperatoerDTO>) result;
+				maingui.displayOperatoerListe(oprList);
 			}
 		}
 	
