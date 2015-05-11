@@ -75,7 +75,7 @@ public class DBServiceImpl extends RemoteServiceServlet implements DBService {
 	@Override
 	public ArrayList<OperatoerDTO> getUserList() {
 		ResultSet rs = null;
-		OperatoerDTO opr = new OperatoerDTO();
+		OperatoerDTO opr = null;
 		ArrayList<OperatoerDTO> oprList = new ArrayList<OperatoerDTO>();
 		
 		try {
@@ -95,6 +95,7 @@ public class DBServiceImpl extends RemoteServiceServlet implements DBService {
 		try {
 			if(!rs.first()) return null;
 			while(rs.next()){
+				opr = new OperatoerDTO();
 				opr.setOprId(rs.getInt("opr_id"));
 				opr.setOprNavn(rs.getString("opr_navn"));
 				opr.setIni(rs.getString("ini"));

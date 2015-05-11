@@ -18,6 +18,7 @@ public class MainGUI extends Composite {
 
 	private TextBox userNameTxt;
 	private TextBox userPwdTxt;
+	private TextBox getUserNameTxt;
 	
 	
 	private DBServiceClientImpl serviceImpl;
@@ -35,6 +36,18 @@ public class MainGUI extends Composite {
 		authenticateBtn.addClickHandler(new AuthenticationClickHandler());
 		this.vPanel.add(authenticateBtn);
 		
+		getUserNameTxt = new TextBox();
+		this.vPanel.add(getUserNameTxt);
+		
+		Button getUserBtn = new Button("getUser");
+		getUserBtn.addClickHandler(new getUserClickHandler());
+		this.vPanel.add(getUserBtn);
+		
+		Button getUserListBtn = new Button("getUserList");
+		getUserListBtn.addClickHandler(new getUserListClickHandler());
+		this.vPanel.add(getUserListBtn);
+		
+		
 	}
 	
 	private class AuthenticationClickHandler implements ClickHandler {
@@ -44,6 +57,21 @@ public class MainGUI extends Composite {
 			String username = userNameTxt.getText();
 			String pwd = userPwdTxt.getText();
 			serviceImpl.authenticateUser(username, pwd);
+		}
+	}
+	private class getUserClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			int oprId = Integer.parseInt(getUserNameTxt.getText());
+			serviceImpl.getUser(oprId);
+		}
+	}
+	private class getUserListClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			serviceImpl.getUserList();
 		}
 	}
 	
