@@ -19,6 +19,19 @@ public class MainGUI extends Composite {
 	private TextBox userNameTxt;
 	private TextBox userPwdTxt;
 	private TextBox getUserNameTxt;
+	private TextBox deleteUserIdTxt;
+	
+	private TextBox addUserIdTxt;
+	private TextBox addUserNameTxt;
+	private TextBox addUserIniTxt;
+	private TextBox addUserCprTxt;
+	private TextBox addUserPwdTxt;
+	
+	private TextBox upUserIdTxt;
+	private TextBox upUserNameTxt;
+	private TextBox upUserIniTxt;
+	private TextBox upUserCprTxt;
+	private TextBox upUserPwdTxt;
 	
 	
 	private DBServiceClientImpl serviceImpl;
@@ -47,7 +60,51 @@ public class MainGUI extends Composite {
 		getUserListBtn.addClickHandler(new getUserListClickHandler());
 		this.vPanel.add(getUserListBtn);
 		
+		deleteUserIdTxt = new TextBox();
+		this.vPanel.add(deleteUserIdTxt);
 		
+		Button deleteUserBtn = new Button("deleteUser");
+		deleteUserBtn.addClickHandler(new deleteUserClickHandler());
+		this.vPanel.add(deleteUserBtn);
+		
+		addUserIdTxt = new TextBox();
+		this.vPanel.add(addUserIdTxt);
+		
+		addUserNameTxt = new TextBox();
+		this.vPanel.add(addUserNameTxt);
+		
+		addUserIniTxt = new TextBox();
+		this.vPanel.add(addUserIniTxt);
+		
+		addUserCprTxt = new TextBox();
+		this.vPanel.add(addUserCprTxt);
+		
+		addUserPwdTxt = new TextBox();
+		this.vPanel.add(addUserPwdTxt);
+		
+		Button createUserBtn = new Button("createUser");
+		createUserBtn.addClickHandler(new createUserClickHandler());
+		this.vPanel.add(createUserBtn);	
+		
+		upUserIdTxt = new TextBox();
+		this.vPanel.add(upUserIdTxt);
+		
+		upUserNameTxt = new TextBox();
+		this.vPanel.add(upUserNameTxt);
+		
+		upUserIniTxt = new TextBox();
+		this.vPanel.add(upUserIniTxt);
+		
+		upUserCprTxt = new TextBox();
+		this.vPanel.add(upUserCprTxt);
+		
+		upUserPwdTxt = new TextBox();
+		this.vPanel.add(upUserPwdTxt);
+		
+		Button updateUserBtn = new Button("updateUser");
+		updateUserBtn.addClickHandler(new updateUserClickHandler());
+		this.vPanel.add(updateUserBtn);	
+
 	}
 	
 	private class AuthenticationClickHandler implements ClickHandler {
@@ -59,6 +116,34 @@ public class MainGUI extends Composite {
 			serviceImpl.authenticateUser(username, pwd);
 		}
 	}
+	
+	private class createUserClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			OperatoerDTO opr = new OperatoerDTO();
+			opr.setOprId(Integer.parseInt(addUserIdTxt.getText()));
+			opr.setOprNavn(addUserNameTxt.getText());
+			opr.setIni(addUserIniTxt.getText());
+			opr.setCpr(addUserCprTxt.getText());
+			opr.setPassword(addUserIdTxt.getText());
+			serviceImpl.createUser(opr);
+		}
+	}
+	
+	private class updateUserClickHandler implements ClickHandler {
+		@Override
+		public void onClick(ClickEvent event) {
+			OperatoerDTO opr = new OperatoerDTO();
+			opr.setOprId(Integer.parseInt(addUserIdTxt.getText()));
+			opr.setOprNavn(addUserNameTxt.getText());
+			opr.setIni(addUserIniTxt.getText());
+			opr.setCpr(addUserCprTxt.getText());
+			opr.setPassword(addUserIdTxt.getText());
+			serviceImpl.updateUser(opr);
+		}
+	}
+	
 	private class getUserClickHandler implements ClickHandler {
 
 		@Override
@@ -67,6 +152,7 @@ public class MainGUI extends Composite {
 			serviceImpl.getUser(oprId);
 		}
 	}
+	
 	private class getUserListClickHandler implements ClickHandler {
 
 		@Override
@@ -75,10 +161,28 @@ public class MainGUI extends Composite {
 		}
 	}
 	
+	private class deleteUserClickHandler implements ClickHandler {
+
+		@Override
+		public void onClick(ClickEvent event) {
+			int oprId = Integer.parseInt(deleteUserIdTxt.getText());
+			serviceImpl.deleteUser(oprId);
+		}
+	}
+
 	public void authenticateOperatoer(boolean result) {
 		HTML html = new HTML();
 		
 		String code = "<b>Svar fra DB:</b> " + result + "</br>";
+		
+		html.setHTML(code);
+		this.vPanel.add(html);
+	}
+	
+	public void deletedOperatoer(boolean result) {
+		HTML html = new HTML();
+		
+		String code = "<b>Bruger slettet:</b> " + result + "</br>";
 		
 		html.setHTML(code);
 		this.vPanel.add(html);

@@ -12,6 +12,7 @@ import cdio3.gwt.client.model.OperatoerDTO;
 public class DBServiceClientImpl implements DBServiceClientInt {
 	private DBServiceAsync service;
 	private MainGUI maingui;
+	private int loggedin = 0;
 	
 	public DBServiceClientImpl(String url) {
 		System.out.println(url);
@@ -29,7 +30,6 @@ public class DBServiceClientImpl implements DBServiceClientInt {
 	@Override
 	public void getUser(int oprId) {
 		this.service.getUser(oprId, new DefaultCallback());
-		
 	}
 
 	@Override
@@ -41,19 +41,16 @@ public class DBServiceClientImpl implements DBServiceClientInt {
 	@Override
 	public void deleteUser(int oprId) {
 		this.service.deleteUser(oprId, new DefaultCallback());
-		
 	}
 
 	@Override
 	public void createUser(OperatoerDTO opr) {
 		this.service.createUser(opr, new DefaultCallback());
-		
 	}
 
 	@Override
 	public void updateUser(OperatoerDTO opr) {
 		this.service.updateUser(opr, new DefaultCallback());
-		
 	}
 	public MainGUI getMainGUI(){
 		return this.maingui;
@@ -76,8 +73,14 @@ public class DBServiceClientImpl implements DBServiceClientInt {
 				maingui.displayOperatoer(opr);
 			}
 			else if(result instanceof Boolean){
-				boolean svar = (Boolean) result;
-				maingui.authenticateOperatoer(svar);
+				if(loggedin == 0){
+					boolean svar = (Boolean) result;
+					maingui.authenticateOperatoer(svar);
+				}
+				else{
+					boolean svar = (Boolean) result;
+					maingui.deletedOperatoer(svar);
+				}
 			}
 			else if(result instanceof ArrayList<?>){
 				ArrayList oprList = (ArrayList<OperatoerDTO>) result;

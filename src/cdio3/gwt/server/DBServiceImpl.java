@@ -112,7 +112,7 @@ public class DBServiceImpl extends RemoteServiceServlet implements DBService {
 
 	@SuppressWarnings("static-access")
 	@Override
-	public void deleteUser(int oprId) {
+	public Boolean deleteUser(int oprId) {
 		Connector conn = null;
 		try {
 			conn = new Connector();
@@ -127,9 +127,11 @@ public class DBServiceImpl extends RemoteServiceServlet implements DBService {
 		}
 		try {
 			conn.doUpdate("DELETE FROM operatoer WHERE opr_id = " + oprId);
+			return true;
 		} catch (DALException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	@SuppressWarnings("static-access")
@@ -150,19 +152,19 @@ public class DBServiceImpl extends RemoteServiceServlet implements DBService {
 		try {
 			conn.doUpdate(
 					"INSERT INTO operatoer(opr_id, opr_navn, ini, cpr, password) "
-					+ "VALUES(" + opr.getOprId() + ", '" + opr.getOprNavn() + ", '" + opr.getIni() 
-					+ ", '" + opr.getCpr() + ", '" + opr.getPassword() + "'); "
+					+ "VALUES(" + opr.getOprId() + ", '" + opr.getOprNavn() + "', '" + opr.getIni() 
+					+ "', '" + opr.getCpr() + "', '" + opr.getPassword() + "'); "
 				);
 		} catch (DALException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@SuppressWarnings("static-access")
 	@Override
 	public void updateUser(OperatoerDTO opr) {
 		Connector conn = null;
+		int oprId = opr.getOprId();
 		try {
 			conn = new Connector();
 		} catch (InstantiationException e) {
@@ -177,9 +179,7 @@ public class DBServiceImpl extends RemoteServiceServlet implements DBService {
 		try {
 			conn.doUpdate(
 					"UPDATE operatoer SET  opr_id = '" + opr.getOprId() + "', opr_navn = '" + opr.getOprNavn() + "', ini =  '" + opr.getIni() + 
-					"', cpr = '" + opr.getCpr() + "', password = '" + opr.getPassword() + "' WHERE opr_id = " +
-					opr.getOprId()
-			);
+					"', cpr = '" + opr.getCpr() + "', password = '" + opr.getPassword() + "' WHERE opr_id = " + oprId);
 		} catch (DALException e) {
 			e.printStackTrace();
 		}

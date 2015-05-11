@@ -16,9 +16,9 @@ public class OperatoerDTO implements Serializable
 	String oprNavn;                
 	String ini;                 
 	String cpr;                 
-	String password;            
-    
-    public synchronized int getOprId() { return oprId; }
+	String password;
+
+	public synchronized int getOprId() { return oprId; }
 	public synchronized void setOprId(int oprId) { this.oprId = oprId; }
 	public synchronized String getOprNavn() { return oprNavn; }
 	public synchronized void setOprNavn(String oprNavn) { this.oprNavn = oprNavn; }
